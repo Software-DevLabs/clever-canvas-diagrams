@@ -94,11 +94,11 @@ export function DiagramCanvas({ diagram }: { diagram: Diagram }) {
   }, [diagram]);
 
   return (
-    <ReactFlowProvider>
+    <ReactFlowProvider key={JSON.stringify(diagram)}>
       <ReactFlow
-        key={JSON.stringify(diagram)}
+
         defaultNodes={nodes} defaultEdges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes}
-        fitView fitViewOptions={{ padding: 0.2 }} proOptions={{ hideAttribution: true }} className="dg-flow"
+        minZoom={0.2} fitView fitViewOptions={{ padding: 0.2 }} proOptions={{ hideAttribution: true }} className="dg-flow"
       >
         <Background variant={BackgroundVariant.Dots} gap={14} size={1.2} color="var(--dg-dot)" />
         <FitOnLoad />
