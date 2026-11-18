@@ -28,3 +28,5 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Diagram agent: the AI returns diagram JSON (nodes/edges/tags on a col/row grid) via a server function in src/lib/diagram.functions.ts; the client renders it with @xyflow/react custom nodes. Why: keeps the model call server-side and layout deterministic.
