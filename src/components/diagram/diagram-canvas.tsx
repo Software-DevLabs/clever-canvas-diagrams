@@ -1,7 +1,7 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import {
   ReactFlow, Background, BackgroundVariant, Controls, Handle, Position, MarkerType,
-  BaseEdge, EdgeLabelRenderer, getSmoothStepPath, ReactFlowProvider,
+  BaseEdge, EdgeLabelRenderer, useNodesInitialized, useReactFlow, getSmoothStepPath, ReactFlowProvider,
   type NodeProps, type EdgeProps, type Node, type Edge,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
@@ -58,6 +58,13 @@ function LabeledEdge(p: EdgeProps) {
   );
 }
 
+function FitOnLoad() {
+  const ready = useNodesInitialized();
+  const { fitView } = useReactFlow();
+  useEffect(() => { if (ready) requestAnimationFrame(() => fitView({ padding: 0.15 })); }, [ready, fitView]);
+  return null;
+}
+
 const nodeTypes = { shape: ShapeNode, tag: TagNode };
 const edgeTypes = { labeled: LabeledEdge };
 
@@ -91,9 +98,10 @@ export function DiagramCanvas({ diagram }: { diagram: Diagram }) {
       <ReactFlow
         key={JSON.stringify(diagram)}
         defaultNodes={nodes} defaultEdges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes}
-        fitView fitViewOptions={{ padding: 0.2 }} onInit={(i) => setTimeout(() => i.fitView({ padding: 0.2 }), 60)} proOptions={{ hideAttribution: true }} className="dg-flow"
+        fitView fitViewOptions={{ padding: 0.2 }} proOptions={{ hideAttribution: true }} className="dg-flow"
       >
         <Background variant={BackgroundVariant.Dots} gap={14} size={1.2} color="var(--dg-dot)" />
+        <FitOnLoad />
         <Controls showInteractive={false} className="dg-controls" />
       </ReactFlow>
     </ReactFlowProvider>
